@@ -15,6 +15,7 @@ router.get("/inventory/:id", inventoryController.getProductById);
 
 //ENDPOINT #3: 
 //POST /api/inventory/decrement: Takes a list of {product_id, quantity} to decrement from stock
+router.post("/inventory/decrement", inventoryController.decrementProduct);
 
 //ENDPOINT #4: 
 //POST /api/inventory/increment: akes a list of {product_id, quantity} to add back to stock

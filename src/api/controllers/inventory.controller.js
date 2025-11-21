@@ -13,6 +13,20 @@ class InventoryController {
         }
     }
 
+    //ENDPOINT #3
+    async decrementProduct(req, res) {
+        try {
+            const items = req.body;
+            if(!Array.isArray(items) || items.length === 0) {
+                return res.status(400).json({ error: 'Body must not be a non-empty array of {product_id, quantity}' });
+            }
+            const result = await inventoryService.decrementProduct(items);
+            res.json({ message: " success", data : result });
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
     //TEST ENDPOINTS
     async getAllProducts(req, res) {
         try {

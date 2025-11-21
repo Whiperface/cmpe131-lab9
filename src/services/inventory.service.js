@@ -41,6 +41,24 @@ class InventoryService {
         }
         return await inventoryRepository.delete(id);
     }
+
+    async decrementProduct(items) {
+        for(const item of items) {
+            if(!item.product_id || !item.quantity) {
+                throw new Error('Each item must include product_id and quantity');
+            }
+            const product = await inventoryRepository.findById(item.product_id);
+            if(!product) {
+                throw new Error('Product not found');
+            }
+            const newQuantity = product.productQuantity = item.quantity;
+            if(newQuantity < 0) {
+                throw new Error('Not enough stock for product ID ${item.product_id}');
+            }
+            await inventoryRepository.update(item.product_id, newQuantity);
+        }
+        return { updated: items.length, items };
+    }
 }
 
 module.exports = new InventoryService();
