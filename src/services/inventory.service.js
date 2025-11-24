@@ -45,7 +45,7 @@ class InventoryService {
     async decrementProduct(items) {
         for(const item of items) {
             if(!item.product_id || !item.quantity) {
-                throw new Error('Each item must include product_id & quantity');
+                throw new Error('Each item must include product_id and quantity');
             }
             const product = await inventoryRepository.findById(item.product_id);
             if(!product) {

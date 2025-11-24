@@ -21,7 +21,7 @@ class InventoryController {
                 return res.status(400).json({ error: 'Body must not be a non-empty array of {product_id, quantity}' });
             }
             const result = await inventoryService.decrementProduct(items);
-            res.json({ message: " success", data : result });
+            res.json({ message: "success", data : result });
         } catch (err) {
             res.status(400).json({ error: err.message });
         }
