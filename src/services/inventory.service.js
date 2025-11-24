@@ -43,12 +43,6 @@ class InventoryService {
     }
 
     async decrementProduct(items) {
-        if(!Array.isArray(items) || items.length === 0) {
-            throw new Error('Request body must be an array of { product_id, quantity } ');
-        }
-
-        const results = [];
-
         for(const item of items) {
             if(!item.product_id || !item.quantity) {
                 throw new Error('Each item must include product_id & quantity');
