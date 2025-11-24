@@ -43,19 +43,25 @@ class InventoryService {
     }
 
     async decrementProduct(items) {
+        if(!Array.isArray(items) || items.length === 0) {
+            throw new Error('Request body must be an array of { product_id, quantity } ');
+        }
+
+        const results = [];
+
         for(const item of items) {
             if(!item.product_id || !item.quantity) {
-                throw new Error('Each item must include product_id and quantity');
+                throw new Error('Each item must include product_id & quantity');
             }
             const product = await inventoryRepository.findById(item.product_id);
             if(!product) {
                 throw new Error('Product not found');
             }
-            const newQuantity = product.productQuantity = item.quantity;
-            if(newQuantity < 0) {
-                throw new Error('Not enough stock for product ID ${item.product_id}');
+            const quantity = product.productQuantity = item.quantity;
+            if(quantity < 0) {
+                throw new Error('Invalid value to decrement item ${product_id}');
             }
-            await inventoryRepository.update(item.product_id, newQuantity);
+            await inventoryRepository.decrementProduct(item.product_id, quantity);
         }
         return { updated: items.length, items };
     }

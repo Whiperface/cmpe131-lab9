@@ -38,6 +38,17 @@ class InventoryRepository {
         const result = await db.run('DELETE FROM inventory WHERE id = ?', id);
         return { changes: result.changes };
     }
+    
+    //ENDPOINT #3
+    async decrementProduct(id, quantity) {
+        const db = await getDbPromise;
+        const result = await db.run(
+            'UPDATE inventory SET productQuantity = productQuantity - ? WHERE id = ? AND productQuantity >= ?', 
+            quantity, id, quantity
+        );
+        if(SpeechRecognitionResultList.changes !== 1) { throw new Error('Insufficient stock to decrement item ${id}'); }
+        return { changes : result.changes };
+    }
 }
 
 module.exports = new InventoryRepository();
