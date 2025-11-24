@@ -46,7 +46,7 @@ class InventoryRepository {
             'UPDATE inventory SET productQuantity = productQuantity - ? WHERE id = ? AND productQuantity >= ?', 
             quantity, id, quantity
         );
-        if(SpeechRecognitionResultList.changes !== 1) { throw new Error('Insufficient stock to decrement item ${id}'); }
+        if(result.changes !== 1) { throw new Error('Insufficient stock to decrement item ${id}'); }
         return { changes : result.changes };
     }
 }
